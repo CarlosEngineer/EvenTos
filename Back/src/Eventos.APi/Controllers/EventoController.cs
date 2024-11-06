@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using Eventos.APi.Data;
 using Eventos.APi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Eventos.APi.Controllers
@@ -13,44 +15,24 @@ namespace Eventos.APi.Controllers
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
-         private readonly List<Evento>_evento;
+         private readonly DataContext _context;
         
-        public EventoController()
+        public EventoController(DataContext context)
         {
-             _evento = new List<Evento>{
-                new Evento
-            {
-                Id = 1,
-                Local = "Sao Paulo",
-                Tema = "Csharp",
-                Lote = 1,
-                QtdPessoas = 10,
-                ImagemUrl = "foto.png"
-            },
-            new Evento
-            {
-                Id = 2,
-                Local = "Rio de Janeiro",
-                Tema = "Angular",
-                Lote = 2,
-                QtdPessoas = 5,
-                ImagemUrl = "foto2.png"
-            }
-
-        };
-
+              _context = context;
         }
 
-        [HttpGet]
-        public IEnumerable<Evento> Get()
+       [HttpGet]
+        public ActionResult<List<Evento>> Get()
         {
-            return _evento;
+            var eventos = _context.Eventos.ToList();
+            return Ok(eventos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public ActionResult<IEnumerable<Evento>> GetById(int id)
         {
-            var evento = _evento.FirstOrDefault(c => c.Id == id);
+           var evento = _context.Eventos.FirstOrDefault(c => c.Id == id);
 
             if (evento == null)
             {
@@ -58,38 +40,34 @@ namespace Eventos.APi.Controllers
             }
 
             return Ok(evento);
-        }
+        }  
 
 
         [HttpPost]
         public IActionResult Inserir( Evento evento)
         {
-            if (evento == null){
-                return BadRequest();
-            }   
-            if (_evento.Any(c => c.Id == evento.Id)){
-                return BadRequest($"O Id {evento} Ja existe. ");
-            }
-
-            _evento.Add(evento);
-            return Ok(evento);
-
-        
+             _context.Add(evento); 
+             _context.SaveChanges();
+              return CreatedAtAction(nameof(GetById), new { id = evento.Id }, evento);
+                  
         }   
 
 
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)
         {
-            var evento = _evento.FirstOrDefault(c => c.Id == id);
+          var evento = _context.Eventos.FirstOrDefault(c => c.Id == id);
 
-            if (evento == null){
-                 return NotFound("Evento não encontrado.");
+            if (evento == null)
+            {
+                return NotFound();
             }
 
-            _evento.Remove(evento);
+            _context.Eventos.Remove(evento);
+            _context.SaveChanges();
 
             return NoContent();
+          
         }
     }
 }
