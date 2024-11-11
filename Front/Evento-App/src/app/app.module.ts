@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { EventosComponent } from './eventos/eventos.component';
 import { PalestranteComponent } from './palestrante/palestrante.component';
 import { NavComponent } from './nav/nav.component';
-import { CollapseModule} from 'ngx-bootstrap/collapse'
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import { CollapseModule} from 'ngx-bootstrap/collapse'
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CollapseModule,
     FormsModule
   ],
   providers: [],

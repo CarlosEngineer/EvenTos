@@ -30,7 +30,7 @@ export class EventosComponent {
     return this.eventos.filter(
       (      evento: { tema: string; local: string; }) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor)!== -1 ||
       evento.local.toLocaleLowerCase().indexOf(filtrarPor)!== -1 ||
-      evento.tema.toLocaleLowerCase().indexOf(filtrarPor)!== -1 
+      evento.tema.toLocaleLowerCase().indexOf(filtrarPor)!== -1
     );
   }
 
@@ -46,7 +46,7 @@ export class EventosComponent {
     this.mostrarImagem = !this.mostrarImagem;
   }
 
-  public GetEventos():void{ //metodo criado para os dados
+  public GetEventos():void{ 
       this.http.get('https://localhost:5001/api/eventos').subscribe(
         response => {
           this.eventos = response;

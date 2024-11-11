@@ -3,7 +3,7 @@
 
 <div class="">
   <div class="form-group mb-2   d-flex ">
-    <label for="search" class="sr-onlyc m-2 p-4"><b>Filtro:</b></label>
+    <label for="search" class="sr-onlyc m-2 p-4"><b>FILTRO :</b></label>
     <input type="text"
     class="form-control  m-2 "
     style="max-width: max-content;"
@@ -47,7 +47,10 @@
         <td>{{evento.dataEvento}}</td>
         <td>{{evento.qtdPessoas}}</td>
         <td>{{evento.lote}}</td>
-        <td></td>
+        <td>
+          <button type="button" class="btn btn-primary btn-sm m-2 ">EDITAR</button>
+          <button type="button" class="btn btn-danger btn-sm ">EXCLUIR</button>
+        </td>
       </tr>
     </tbody>
     <tfoot *ngIf="!eventos.length ">
